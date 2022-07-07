@@ -5,6 +5,7 @@ import com.works.entities.UserPassword;
 import com.works.repositories.UserRepository;
 import com.works.utils.ERest;
 import com.works.utils.Util;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -22,11 +23,11 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
-    public ResponseEntity update(String name, int uid) {
+   /* public ResponseEntity update(String name, int uid) {
         Map<String, Object> hm = new LinkedHashMap<>();
         hm.put("Result", userRepository.updateNameByUid(name, uid));
         return new ResponseEntity(hm, HttpStatus.OK);
-    }
+    }*/
 
     public ResponseEntity list() {
         Map<ERest, Object> hm = new LinkedHashMap<>();
