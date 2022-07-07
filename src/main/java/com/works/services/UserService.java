@@ -1,6 +1,7 @@
 package com.works.services;
 
 import com.works.entities.User;
+import com.works.entities.UserPassword;
 import com.works.repositories.UserRepository;
 import com.works.utils.ERest;
 import com.works.utils.Util;
@@ -107,6 +108,49 @@ public class UserService {
         }else {
             hm.put(ERest.status, false);
             hm.put(ERest.message, "Login failed");
+        }
+        return new ResponseEntity(hm, HttpStatus.OK);
+    }
+    public ResponseEntity profileUpdate( User user ) {
+        Map<String, Object> hm = new LinkedHashMap<>();
+        Optional<User> oUser = userRepository.findById(user.getUid());
+        if (oUser.isPresent() ) {
+            User dbUser = oUser.get();
+            dbUser.setName(user.getName());
+            dbUser.setAge( user.getAge() );
+            dbUser.setEmail(user.getEmail());
+            dbUser.setSurname(user.getSurname());
+            userRepository.saveAndFlush(dbUser);
+            dbUser.setPassword("secur");
+            hm.put("status", true);
+            hm.put("result", dbUser);
+        }else {
+            hm.put("status", false);
+            hm.put("result", user);
+        }
+        return new ResponseEntity(hm, HttpStatus.OK);
+    }
+    public ResponseEntity passwordChange(UserPassword userPassword) {
+        Map<String, Object> hm = new LinkedHashMap<>();
+        Optional<User> oUser = userRepository.findById( userPassword.getUid() );
+        if ( oUser.isPresent() ) {
+            User dbUser = oUser.get();
+            String dbOldPassword = dbUser.getPassword();
+            String jsonOldPassword = Util.md5( userPassword.getOldPassword() );
+            if ( dbOldPassword.equals( jsonOldPassword ) ) {
+                String jsonNewPassword = Util.md5( userPassword.getNewPassword() );
+                dbUser.setPassword( jsonNewPassword );
+                userRepository.saveAndFlush( dbUser );
+                hm.put("status", true);
+                dbUser.setPassword("secur");
+                hm.put("result", dbUser);
+            }else {
+                hm.put("status", false);
+                hm.put("result", userPassword);
+            }
+        }else {
+            hm.put("status", false);
+            hm.put("result", userPassword);
         }
         return new ResponseEntity(hm, HttpStatus.OK);
     }
