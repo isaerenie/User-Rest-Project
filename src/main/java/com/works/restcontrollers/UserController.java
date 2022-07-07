@@ -1,2 +1,8 @@
-package com.works.restcontrollers;public class UserController {
+package com.works.restcontrollers;
+
+import org.springframework.web.bind.annotation.RestController;
+
+@RestController
+public class UserController {
+
 }
