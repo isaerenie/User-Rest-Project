@@ -3,6 +3,7 @@ package com.works.services;
 import com.works.entities.User;
 import com.works.repositories.UserRepository;
 import com.works.utils.ERest;
+import com.works.utils.Util;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -93,5 +94,20 @@ public class UserService {
         hm.put(ERest.status, true);
         return new ResponseEntity(hm, HttpStatus.OK);
     }
-
+    public ResponseEntity login(User user) {
+        Map<ERest, Object> hm = new LinkedHashMap<>();
+        String newPassWord = Util.md5(user.getPassword());
+         Optional<User> optionalUser=userRepository.findByEmailEqualsAndPasswordEquals(user.getEmail(), newPassWord);
+        if (optionalUser.isPresent()) {
+            hm.put(ERest.status, true);
+            hm.put(ERest.message, "Login success");
+            User u=optionalUser.get();
+            u.setPassword("true");
+            hm.put(ERest.result,u);
+        }else {
+            hm.put(ERest.status, false);
+            hm.put(ERest.message, "Login failed");
+        }
+        return new ResponseEntity(hm, HttpStatus.OK);
+    }
 }
