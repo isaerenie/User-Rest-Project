@@ -68,7 +68,7 @@ public class UserService {
         return new ResponseEntity(hm, HttpStatus.OK);
     }
 
-    public ResponseEntity searchU(String id) {
+    public ResponseEntity searchS(String id) {
         Map<ERest, Object> hm = new LinkedHashMap<>();
         try {
             int iid = Integer.parseInt(id);
@@ -89,7 +89,7 @@ public class UserService {
         return new ResponseEntity(hm, HttpStatus.OK);
     }
 
-    public ResponseEntity searchNS(String q) {
+    public ResponseEntity searchP(String q) {
         Map<ERest, Object> hm = new LinkedHashMap<>();
         List<User> lUser = userRepository.findByNameContainsOrSurnameContainsAllIgnoreCase(q, q);
         hm.put(ERest.result, lUser);

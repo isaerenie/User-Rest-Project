@@ -32,8 +32,12 @@ public class UserController {
     public ResponseEntity delete(String id){
         return userService.delete(id);
     }
-    @GetMapping("/searchU")
-    public ResponseEntity searchU(@RequestParam String id){
-        return userService.searchU(id);
+    @GetMapping("/searchS")
+    public ResponseEntity searchS(@RequestParam String id){
+        return userService.searchS(id);
+    }
+    @GetMapping("/searchP/{q}")
+    public ResponseEntity searchP(@PathVariable String q){
+        return userService.searchP(q);
     }
 }
